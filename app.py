@@ -141,6 +141,38 @@ def profile():
 
     return render_template("profile.html", name=full_name, gender=gender, birth_date=birth_date)
 
+@app.route("/allergies")
+def allergies():
+    access_token = session.get("access_token")
+    patient_id = session.get("patient")
+    if not access_token or not patient_id:
+        return redirect(url_for("home"))
+
+    # FHIR call to get allergies
+    fhir_url = f"{FHIR_BASE}/AllergyIntolerance?patient={patient_id}"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Accept": "application/fhir+json"
+    }
+
+    response = requests.get(fhir_url, headers=headers)
+    response.raise_for_status()
+    allergies = response.json().get("entry", [])
+
+    # Extract key info from each allergy
+    parsed_allergies = []
+    for entry in allergies:
+        resource = entry.get("resource", {})
+        substance = resource.get("code", {}).get("text", "Unknown substance")
+        reaction = (
+            resource.get("reaction", [{}])[0]
+            .get("manifestation", [{}])[0]
+            .get("text", "No reaction noted")
+        )
+        parsed_allergies.append({"substance": substance, "reaction": reaction})
+
+    return render_template("allergies.html", allergies=parsed_allergies)
+
 @app.route("/set-test")
 def set_test():
     session["test_value"] = "hello"

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Allergy Information</title>
+</head>
+<body>
+    <h2>Allergies</h2>
+    {% if allergies %}
+        <ul>
+        {% for allergy in allergies %}
+            <li>
+                <strong>{{ allergy.substance }}</strong> – Reaction: {{ allergy.reaction }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No known allergies.</p>
+    {% endif %}
+    <a href="/profile">Back to Profile</a>
+</body>
+</html>
