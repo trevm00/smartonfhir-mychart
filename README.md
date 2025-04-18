@@ -3,6 +3,7 @@
 Welcome to the **Epic SmartOnFHIR Patient Launch** project!  
 This demo showcases how to integrate with **Epic's MyChart** using **SMART on FHIR** and **OAuth 2.0** to securely access patient health information through FHIR endpoints.
 
+- **Try it**: [https://smartonfhir-mychart-demo.onrender.com](Https://smartonfhir-mychart-demo.onrender.com)
 ---
 
 ## 🌟 Features
